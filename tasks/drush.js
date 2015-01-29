@@ -9,8 +9,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-drush');
   grunt.loadNpmTasks('grunt-newer');
 
-  // Provide a default path for drush.
-  var cmd = grunt.config('config.drush.cmd') || process.cwd() + '/bin/drush';
+  var path = require('path'),
+    _ = require('lodash');
+
+  // If no path is configured for Drush, fallback to the system path.
+  var cmd = grunt.config('config.drush.cmd') !== undefined ? {cmd: path.resolve(grunt.config('config.drush.cmd'))} : {};
 
   // Allow extra arguments for drush to be supplied.
   var args = ['make', '<%= config.srcPaths.make %>', '<%= config.buildPaths.temp %>'],
@@ -25,23 +28,19 @@ module.exports = function(grunt) {
   grunt.config('drush', {
     make: {
       args: args,
-      options: {
-        cmd: cmd
-      }
+      options: _.extend({}, cmd)
     },
     liteinstall: {
       args: ['site-install', '-y', 'standard', '--db-url=sqlite://drupal:drupal@drupal.sqlite'],
-      options: {
-        cmd: cmd,
+      options: _.extend({
         cwd: '<%= config.buildPaths.html %>'
-      }
+      }, cmd)
     },
     runserver: {
       args: ['runserver', '8080'],
-      options: {
-        cmd: cmd,
+      options: _.extend({
         cwd: '<%= config.buildPaths.html %>'
-      }
+      }, cmd)
     }
   });
 
