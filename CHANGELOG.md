@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## NEXT
+
+- Moving more default Gruntconfig.json into code for a slimmer project Gruntconfig.
+
+### Upgrade Notes
+
+- Gruntconfig.json no longer needs the `buildPaths` config key. Elements of
+  `buildPaths` added to your project Gruntconfig will override default behavior.
+
+
 ## v0.5.2 [2015/01/24]
 
 - Adding configuration for the Drush executable path, whether to trigger a fail
